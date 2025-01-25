@@ -5,13 +5,23 @@ import { priceFormat } from "@utils/priceFormart";
 import { useCart } from "@hooks/useCart";
 
 import * as S from "./styles";
+import { useState } from "react";
 type ProductItemProps = {
   item: IProduct;
 };
 
 export const ProductItem = ({ item }: ProductItemProps) => {
+  const [quantity, setQuantity] = useState(1);
   const theme = useTheme();
   const { addItemToCart } = useCart();
+
+  const increaseQuantity = () => setQuantity(quantity + 1);
+
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
 
   return (
     <S.Card>
@@ -26,8 +36,12 @@ export const ProductItem = ({ item }: ProductItemProps) => {
       <S.Controls>
         <span>{priceFormat(item.price)}</span>
         <div>
-          <QuantitySelector />
-          <S.BtnAddCart onClick={() => addItemToCart(item)}>
+          <QuantitySelector
+            quantity={quantity}
+            increaseQuantity={increaseQuantity}
+            decrementQuantity={decrementQuantity}
+          />
+          <S.BtnAddCart onClick={() => addItemToCart(item, quantity)}>
             <ShoppingCart
               size={22}
               color={theme.colors["base-card"]}

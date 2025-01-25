@@ -1,17 +1,27 @@
 import { useTheme } from "styled-components";
-import * as S from "./styles";
 import { Minus, Plus } from "phosphor-react";
 
-export const QuantitySelector = () => {
+import * as S from "./styles";
+interface QuantitySelectorProps {
+  quantity: number;
+  increaseQuantity: () => void;
+  decrementQuantity: () => void;
+}
+
+export const QuantitySelector = ({
+  quantity,
+  increaseQuantity,
+  decrementQuantity,
+}: QuantitySelectorProps) => {
   const theme = useTheme();
 
   return (
     <S.Controls>
-      <button>
+      <button onClick={decrementQuantity}>
         <Minus size={14} color={theme.colors.purple} weight="fill" />
       </button>
-      <span>1</span>
-      <button>
+      <span>{quantity}</span>
+      <button onClick={increaseQuantity}>
         <Plus size={14} color={theme.colors.purple} weight="fill" />
       </button>
     </S.Controls>

@@ -6,9 +6,11 @@ import * as S from "./styles";
 import { MapPin, ShoppingCart } from "phosphor-react";
 import { useTheme } from "styled-components";
 import { Link } from "react-router-dom";
+import { useCart } from "@hooks/useCart";
 
 export const Header = () => {
   const theme = useTheme();
+  const { cartCount } = useCart();
 
   return (
     <Container>
@@ -23,13 +25,13 @@ export const Header = () => {
             <span>Porto Alegre, RS</span>
           </S.Location>
 
-          <S.Cart to={"/"}>
+          <S.Cart to={`${cartCount > 0 ? "/checkout" : "#"}`}>
             <ShoppingCart
               size={22}
               color={theme.colors["yellow-dark"]}
               weight="fill"
             />
-            <span>1</span>
+            {cartCount > 0 && <span>{cartCount}</span>}
           </S.Cart>
         </S.Nav>
       </S.Header>

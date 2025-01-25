@@ -2,11 +2,13 @@ import { createContext, ReactNode, useState } from "react";
 
 interface CartItem {
   product: IProduct;
+  cartItemsCount: number;
 }
 
 interface CartContexType {
   cart: CartItem[];
-  addItemToCart: (product: IProduct) => void;
+  cartCount: number;
+  addItemToCart: (product: IProduct, quantity: number) => void;
 }
 
 interface CartProviderType {
@@ -19,29 +21,31 @@ export const CartContext = createContext({} as CartContexType);
 export const CartProvider = ({ children }: CartProviderType) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addItemToCart = (product: IProduct) => {
+  const addItemToCart = (product: IProduct, quantity: number) => {
     const indexProduct = cart.findIndex(
       (item) => item.product.id === product.id
     );
 
     if (indexProduct !== -1) {
       const cartList = cart.map((item) =>
-        item.product.id === product.id ? { ...item } : item
+        item.product.id === product.id
+          ? { ...item, cartItemsCount: item.cartItemsCount + quantity }
+          : item
       );
       return setCart(cartList);
     }
 
-    const newProduct = {
-      ...cart,
-      product,
-    };
+    const newProduct = [...cart, { product, cartItemsCount: quantity }];
 
-    setCart([...cart, newProduct]);
+    setCart(newProduct);
   };
+
   console.log(cart);
 
   return (
-    <CartContext.Provider value={{ cart, addItemToCart }}>
+    <CartContext.Provider
+      value={{ cart, cartCount: cart.length, addItemToCart }}
+    >
       {children}
     </CartContext.Provider>
   );
