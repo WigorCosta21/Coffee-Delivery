@@ -2,6 +2,7 @@ import { QuantitySelector } from "@components/QuantitySelector";
 import { ShoppingCart } from "phosphor-react";
 import { useTheme } from "styled-components";
 import { priceFormat } from "@utils/priceFormart";
+import { useCart } from "@hooks/useCart";
 
 import * as S from "./styles";
 type ProductItemProps = {
@@ -10,6 +11,7 @@ type ProductItemProps = {
 
 export const ProductItem = ({ item }: ProductItemProps) => {
   const theme = useTheme();
+  const { addItemToCart } = useCart();
 
   return (
     <S.Card>
@@ -25,7 +27,7 @@ export const ProductItem = ({ item }: ProductItemProps) => {
         <span>{priceFormat(item.price)}</span>
         <div>
           <QuantitySelector />
-          <S.BtnAddCart>
+          <S.BtnAddCart onClick={() => addItemToCart(item)}>
             <ShoppingCart
               size={22}
               color={theme.colors["base-card"]}
