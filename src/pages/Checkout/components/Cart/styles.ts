@@ -6,7 +6,6 @@ export const CartItem = styled.div`
   justify-content: space-between;
   padding: 0.5rem 0 2rem 0.25rem;
   border-bottom: 1px solid ${(props) => props.theme.colors["base-button"]};
-  margin-bottom: 1.2rem;
 
   span {
     ${mixins.fonts.textM}

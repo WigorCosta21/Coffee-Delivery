@@ -54,7 +54,7 @@ export const Controls = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  gap: 1.5rem;
 
   > span {
     ${mixins.fonts.titleM}

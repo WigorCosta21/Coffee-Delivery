@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 export const Controls = styled.div`
-  width: 72px;
-  height: 38px;
+  padding: 0.5rem;
   background-color: ${(props) => props.theme.colors["base-button"]};
   border-radius: 6px;
   display: flex;

@@ -11,7 +11,7 @@ import { useCart } from "@hooks/useCart";
 
 export const Cart = () => {
   const theme = useTheme();
-  const { cart } = useCart();
+  const { cart, removeItemFromCart } = useCart();
 
   const SHIPPING = 3.5;
 
@@ -31,7 +31,9 @@ export const Cart = () => {
                   decrementQuantity={() => {}}
                   increaseQuantity={() => {}}
                 />
-                <S.RemoveButton>
+                <S.RemoveButton
+                  onClick={() => removeItemFromCart(item.product.id)}
+                >
                   <Trash size={16} color={theme.colors.purple} />
                   Remover
                 </S.RemoveButton>

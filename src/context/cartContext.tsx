@@ -9,6 +9,7 @@ interface CartContexType {
   cart: CartItem[];
   cartCount: number;
   addItemToCart: (product: IProduct, quantity: number) => void;
+  removeItemFromCart: (id: string) => void;
 }
 
 interface CartProviderType {
@@ -40,11 +41,20 @@ export const CartProvider = ({ children }: CartProviderType) => {
     setCart(newProduct);
   };
 
-  console.log(cart);
+  const removeItemFromCart = (id: string) => {
+    const updatedCart = cart.filter((item) => item.product.id !== id);
+
+    setCart(updatedCart);
+  };
 
   return (
     <CartContext.Provider
-      value={{ cart, cartCount: cart.length, addItemToCart }}
+      value={{
+        cart,
+        cartCount: cart.length,
+        addItemToCart,
+        removeItemFromCart,
+      }}
     >
       {children}
     </CartContext.Provider>
