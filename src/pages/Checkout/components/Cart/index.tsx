@@ -11,7 +11,7 @@ import { useCart } from "@hooks/useCart";
 
 export const Cart = () => {
   const theme = useTheme();
-  const { cart, removeItemFromCart } = useCart();
+  const { cart, cartTotal, removeItemFromCart } = useCart();
 
   const SHIPPING = 3.5;
 
@@ -48,7 +48,7 @@ export const Cart = () => {
       <S.CartFooter>
         <S.CartSummary>
           <S.CartSummaryItem>
-            Total de itens <span>R$ 19,99</span>
+            Total de itens <span>{priceFormat(cartTotal)}</span>
           </S.CartSummaryItem>
 
           <S.CartSummaryItem>

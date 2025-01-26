@@ -8,6 +8,7 @@ interface CartItem {
 interface CartContexType {
   cart: CartItem[];
   cartCount: number;
+  cartTotal: number;
   addItemToCart: (product: IProduct, quantity: number) => void;
   removeItemFromCart: (id: string) => void;
 }
@@ -47,11 +48,16 @@ export const CartProvider = ({ children }: CartProviderType) => {
     setCart(updatedCart);
   };
 
+  const cartTotal = cart.reduce((total, itemAtual) => {
+    return (total += itemAtual.product.price * itemAtual.cartItemsCount);
+  }, 0);
+
   return (
     <CartContext.Provider
       value={{
         cart,
         cartCount: cart.length,
+        cartTotal,
         addItemToCart,
         removeItemFromCart,
       }}
