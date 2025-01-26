@@ -11,7 +11,13 @@ import { useCart } from "@hooks/useCart";
 
 export const Cart = () => {
   const theme = useTheme();
-  const { cart, cartTotal, removeItemFromCart } = useCart();
+  const {
+    cart,
+    cartTotal,
+    removeItemFromCart,
+    incrementItemQuantity,
+    decrementItemQuantity,
+  } = useCart();
 
   const SHIPPING = 3.5;
   const totalValue = cartTotal + SHIPPING;
@@ -29,8 +35,12 @@ export const Cart = () => {
               <S.CartControls>
                 <QuantitySelector
                   quantity={item.cartItemsCount}
-                  decrementQuantity={() => {}}
-                  increaseQuantity={() => {}}
+                  decrementQuantity={() => {
+                    decrementItemQuantity(item.product.id);
+                  }}
+                  increaseQuantity={() => {
+                    incrementItemQuantity(item.product.id);
+                  }}
                 />
                 <S.RemoveButton
                   onClick={() => removeItemFromCart(item.product.id)}

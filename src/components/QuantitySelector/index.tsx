@@ -17,11 +17,11 @@ export const QuantitySelector = ({
 
   return (
     <S.Controls>
-      <button onClick={decrementQuantity}>
+      <button type="button" onClick={decrementQuantity}>
         <Minus size={14} color={theme.colors.purple} weight="fill" />
       </button>
       <span>{quantity}</span>
-      <button onClick={increaseQuantity}>
+      <button type="button" onClick={increaseQuantity}>
         <Plus size={14} color={theme.colors.purple} weight="fill" />
       </button>
     </S.Controls>

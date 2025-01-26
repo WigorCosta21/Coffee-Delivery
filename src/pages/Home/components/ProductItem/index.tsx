@@ -13,13 +13,18 @@ type ProductItemProps = {
 export const ProductItem = ({ item }: ProductItemProps) => {
   const [quantity, setQuantity] = useState(1);
   const theme = useTheme();
-  const { addItemToCart } = useCart();
+  const { addItemToCart, incrementItemQuantity, decrementItemQuantity } =
+    useCart();
 
-  const increaseQuantity = () => setQuantity(quantity + 1);
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+    incrementItemQuantity(item.id);
+  };
 
   const decrementQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
+      decrementItemQuantity(item.id);
     }
   };
 
