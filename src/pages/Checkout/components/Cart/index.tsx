@@ -14,6 +14,7 @@ export const Cart = () => {
   const { cart, cartTotal, removeItemFromCart } = useCart();
 
   const SHIPPING = 3.5;
+  const totalValue = cartTotal + SHIPPING;
 
   return (
     <Card borderradius="6px 36px 6px 36px">
@@ -48,15 +49,15 @@ export const Cart = () => {
       <S.CartFooter>
         <S.CartSummary>
           <S.CartSummaryItem>
-            Total de itens <span>{priceFormat(cartTotal)}</span>
+            Total de itens <span>R$ {priceFormat(cartTotal)}</span>
           </S.CartSummaryItem>
 
           <S.CartSummaryItem>
-            Entrega <span>{priceFormat(SHIPPING)}</span>
+            Entrega<span> R$ {priceFormat(SHIPPING)}</span>
           </S.CartSummaryItem>
 
           <S.CartSummaryTotal>
-            Total <span>R$ 59,99</span>
+            Total <span>R$ {priceFormat(totalValue)}</span>
           </S.CartSummaryTotal>
         </S.CartSummary>
       </S.CartFooter>

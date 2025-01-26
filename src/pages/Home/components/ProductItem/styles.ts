@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { mixins } from "styles/mixins";
 
 export const Card = styled.div`
+  width: 100%;
   background-color: ${(props) => props.theme.colors["base-card"]};
-  border-radius: 6px 36px 6px 36px;
+  border-radius: 6px 36px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,8 +25,8 @@ export const Card = styled.div`
 `;
 
 export const Image = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 7.5rem;
+  height: 7.5rem;
   margin-top: -1.25rem;
   margin-bottom: 0.75rem;
 
@@ -54,17 +55,23 @@ export const Controls = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-
-  > span {
-    ${mixins.fonts.titleM}
-    color: ${(props) => props.theme.colors["base-text"]};
-  }
+  justify-content: space-between;
 
   div {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+  }
+`;
+
+export const Price = styled.div`
+  display: flex;
+  ${mixins.fonts.titleM}
+
+  span:first-child {
+    ${mixins.fonts.textS}
+    line-height: 160%;
+    align-self: flex-end;
   }
 `;
 

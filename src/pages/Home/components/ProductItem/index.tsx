@@ -34,7 +34,10 @@ export const ProductItem = ({ item }: ProductItemProps) => {
       <h3>{item.name}</h3>
       <p>{item.description}</p>
       <S.Controls>
-        <span>{priceFormat(item.price)}</span>
+        <S.Price>
+          <span>R$</span>
+          <span> {priceFormat(item.price)}</span>
+        </S.Price>
         <div>
           <QuantitySelector
             quantity={quantity}
