@@ -2,9 +2,25 @@ import { useTheme } from "styled-components";
 import { CurrencyDollar, MapPin, Timer } from "phosphor-react";
 
 import * as S from "./styles";
+import { useOrder } from "@hooks/useOrder";
+import { PaymentMethod } from "enums/PaymentMethod";
 
 export const InfoCard = () => {
   const theme = useTheme();
+  const { orderData } = useOrder();
+
+  const translatePaymentMethod = (method: PaymentMethod) => {
+    switch (method) {
+      case PaymentMethod.Credit:
+        return "Crédito";
+      case PaymentMethod.Debit:
+        return "Débito";
+      case PaymentMethod.Cash:
+        return "Dinheiro";
+      default:
+        return method; // Retorna o próprio valor se não encontrar um mapeamento
+    }
+  };
 
   return (
     <S.Card>
@@ -16,9 +32,14 @@ export const InfoCard = () => {
 
           <div>
             <p>
-              Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+              Entrega em{" "}
+              <strong>
+                {orderData?.street}, {orderData?.number}
+              </strong>
             </p>
-            <p>Farrapos - Porto Alegre, RS</p>
+            <p>
+              {orderData?.neighborhood} - {orderData?.city}, {orderData?.state}
+            </p>
           </div>
         </S.Info>
 
@@ -43,7 +64,11 @@ export const InfoCard = () => {
           <div>
             <p>Pagamento na entrega</p>
             <p>
-              <strong>Cartão de Crédito</strong>
+              <strong>
+                {translatePaymentMethod(
+                  orderData?.paymentMethod as PaymentMethod
+                )}
+              </strong>
             </p>
           </div>
         </S.Info>
