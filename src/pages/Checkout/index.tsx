@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useCart } from "@hooks/useCart";
 import { OrderFormData, orderSchema } from "./schema";
 
 import { AddressForm } from "./components/AddressForm";
@@ -9,8 +10,12 @@ import { Container } from "@components/Container";
 import { Payment } from "./components/Payment";
 
 import * as S from "./styles";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+  const { clearCart } = useCart();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -20,7 +25,8 @@ const Checkout = () => {
   });
 
   const handleOrder = (data: OrderFormData) => {
-    console.log(data);
+    navigate("/order-confirmed");
+    clearCart();
   };
 
   return (

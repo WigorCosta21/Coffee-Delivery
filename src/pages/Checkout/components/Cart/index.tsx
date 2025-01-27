@@ -28,7 +28,7 @@ export const Cart = () => {
 
               <S.CartControls>
                 <QuantitySelector
-                  quantity={item.cartItemsCount}
+                  quantity={item.quantity}
                   decrementQuantity={() => {
                     updateItemQuantity(item.product.id, "decrement");
                   }}
@@ -46,7 +46,7 @@ export const Cart = () => {
             </S.CartInfo>
           </S.CartContent>
 
-          <span>{priceFormat(item.totalItemPrice)}</span>
+          <span>R$ {priceFormat(item.totalItemPrice)}</span>
         </S.CartItem>
       ))}
 

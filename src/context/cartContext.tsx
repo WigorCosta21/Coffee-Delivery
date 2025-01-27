@@ -1,20 +1,16 @@
-import { createContext, ReactNode, useState } from "react";
-
-interface CartItem {
-  product: IProduct;
-  cartItemsCount: number;
-  totalItemPrice: number;
-}
+import { createContext, ReactNode, useReducer } from "react";
+import { CartItem, cartReducer } from "reducers/cartReducer";
 
 interface CartContexType {
   cart: CartItem[];
   cartCount: number;
   cartTotal: number;
+  clearCart: () => void;
   addItemToCart: (product: IProduct, quantity: number) => void;
   removeItemFromCart: (id: string) => void;
   updateItemQuantity: (
     productId: string,
-    action: "increment" | "decrement"
+    operation: "increment" | "decrement"
   ) => void;
 }
 
@@ -26,77 +22,28 @@ interface CartProviderType {
 export const CartContext = createContext({} as CartContexType);
 
 export const CartProvider = ({ children }: CartProviderType) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, dispatch] = useReducer(cartReducer, []);
 
   const cartTotal = cart.reduce((total, itemAtual) => {
-    return (total += itemAtual.product.price * itemAtual.cartItemsCount);
+    return (total += itemAtual.product.price * itemAtual.quantity);
   }, 0);
 
-  const calculateItemTotal = (price: number, quantity: number) => {
-    return price * quantity;
-  };
-
   const addItemToCart = (product: IProduct, quantity: number) => {
-    setCart((currentCart) => {
-      const indexProduct = currentCart.findIndex(
-        (item) => item.product.id === product.id
-      );
-
-      if (indexProduct !== -1) {
-        return currentCart.map((item) =>
-          item.product.id === product.id
-            ? {
-                ...item,
-                cartItemsCount: item.cartItemsCount + quantity,
-                totalItemPrice: calculateItemTotal(
-                  product.price,
-                  item.cartItemsCount + quantity
-                ),
-              }
-            : item
-        );
-      }
-
-      return [
-        ...currentCart,
-        {
-          product,
-          cartItemsCount: quantity,
-          totalItemPrice: calculateItemTotal(product.price, quantity),
-        },
-      ];
-    });
+    dispatch({ type: "ADD_TO_CART", payload: { product, quantity } });
   };
 
-  const removeItemFromCart = (id: string) => {
-    const updatedCart = cart.filter((item) => item.product.id !== id);
-
-    setCart(updatedCart);
+  const removeItemFromCart = (productId: string) => {
+    dispatch({ type: "REMOVE_ITEM", payload: productId });
   };
 
   const updateItemQuantity = (
     productId: string,
-    action: "increment" | "decrement"
+    operation: "increment" | "decrement"
   ) => {
-    setCart((currentCart) => {
-      const updatedCart = currentCart.map((item) => {
-        if (item.product.id !== productId) return item;
-
-        const newQuantity =
-          action === "increment"
-            ? item.cartItemsCount + 1
-            : Math.max(1, item.cartItemsCount - 1);
-
-        return {
-          ...item,
-          cartItemsCount: newQuantity,
-          totalItemPrice: calculateItemTotal(item.product.price, newQuantity),
-        };
-      });
-
-      return updatedCart;
-    });
+    dispatch({ type: "UPDATE_QUANTITY", payload: { productId, operation } });
   };
+
+  const clearCart = () => dispatch({ type: "CLEAR_CART" });
 
   return (
     <CartContext.Provider
@@ -107,6 +54,7 @@ export const CartProvider = ({ children }: CartProviderType) => {
         addItemToCart,
         removeItemFromCart,
         updateItemQuantity,
+        clearCart,
       }}
     >
       {children}
