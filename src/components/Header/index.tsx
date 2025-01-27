@@ -22,7 +22,7 @@ export const Header = () => {
         <S.Nav>
           <S.Location>
             <MapPin size={22} color={theme.colors.purple} weight="fill" />
-            <span>Porto Alegre, RS</span>
+            <span>Brasil</span>
           </S.Location>
 
           <S.Cart to={`${cartCount > 0 ? "/checkout" : "#"}`}>

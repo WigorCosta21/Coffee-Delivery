@@ -1,4 +1,4 @@
-type CartAction =
+export type CartAction =
   | { type: "ADD_TO_CART"; payload: { product: IProduct; quantity: number } }
   | { type: "REMOVE_ITEM"; payload: string }
   | {

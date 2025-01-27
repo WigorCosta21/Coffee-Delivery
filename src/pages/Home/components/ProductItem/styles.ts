@@ -80,4 +80,5 @@ export const BtnAddCart = styled.button`
   height: 38px;
   background-color: ${(props) => props.theme.colors["purple-dark"]};
   border-radius: 6px;
+  padding: 0.5rem;
 `;

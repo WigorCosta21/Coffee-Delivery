@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useReducer } from "react";
+import { createContext, ReactNode, useEffect, useReducer } from "react";
 import { CartItem, cartReducer } from "reducers/cartReducer";
 
 interface CartContexType {
@@ -21,8 +21,19 @@ interface CartProviderType {
 // eslint-disable-next-line react-refresh/only-export-components
 export const CartContext = createContext({} as CartContexType);
 
+const CART_STORAGE_KEY = "@coffee-delivery-1.0.0-w";
+
 export const CartProvider = ({ children }: CartProviderType) => {
-  const [cart, dispatch] = useReducer(cartReducer, []);
+  const initializeCart = (): CartItem[] => {
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    return storedCart ? JSON.parse(storedCart) : [];
+  };
+
+  const [cart, dispatch] = useReducer(cartReducer, [], initializeCart);
+
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  }, [cart]);
 
   const cartTotal = cart.reduce((total, itemAtual) => {
     return (total += itemAtual.product.price * itemAtual.quantity);

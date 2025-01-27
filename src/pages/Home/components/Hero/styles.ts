@@ -17,7 +17,7 @@ export const HeroContent = styled.div`
   gap: 3.5rem;
 
   @media screen and (max-width: 1024px) {
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 1rem;
   }
 `;
