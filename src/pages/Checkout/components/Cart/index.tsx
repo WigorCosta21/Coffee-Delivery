@@ -46,7 +46,7 @@ export const Cart = () => {
             </S.CartInfo>
           </S.CartContent>
 
-          <span>{priceFormat(item.product.price)}</span>
+          <span>{priceFormat(item.totalItemPrice)}</span>
         </S.CartItem>
       ))}
 

@@ -3,6 +3,7 @@ import { createContext, ReactNode, useState } from "react";
 interface CartItem {
   product: IProduct;
   cartItemsCount: number;
+  totalItemPrice: number;
 }
 
 interface CartContexType {
@@ -31,23 +32,40 @@ export const CartProvider = ({ children }: CartProviderType) => {
     return (total += itemAtual.product.price * itemAtual.cartItemsCount);
   }, 0);
 
+  const calculateItemTotal = (price: number, quantity: number) => {
+    return price * quantity;
+  };
+
   const addItemToCart = (product: IProduct, quantity: number) => {
-    const indexProduct = cart.findIndex(
-      (item) => item.product.id === product.id
-    );
-
-    if (indexProduct !== -1) {
-      const cartList = cart.map((item) =>
-        item.product.id === product.id
-          ? { ...item, cartItemsCount: item.cartItemsCount + quantity }
-          : item
+    setCart((currentCart) => {
+      const indexProduct = currentCart.findIndex(
+        (item) => item.product.id === product.id
       );
-      return setCart(cartList);
-    }
 
-    const newProduct = [...cart, { product, cartItemsCount: quantity }];
+      if (indexProduct !== -1) {
+        return currentCart.map((item) =>
+          item.product.id === product.id
+            ? {
+                ...item,
+                cartItemsCount: item.cartItemsCount + quantity,
+                totalItemPrice: calculateItemTotal(
+                  product.price,
+                  item.cartItemsCount + quantity
+                ),
+              }
+            : item
+        );
+      }
 
-    setCart(newProduct);
+      return [
+        ...currentCart,
+        {
+          product,
+          cartItemsCount: quantity,
+          totalItemPrice: calculateItemTotal(product.price, quantity),
+        },
+      ];
+    });
   };
 
   const removeItemFromCart = (id: string) => {
@@ -69,7 +87,11 @@ export const CartProvider = ({ children }: CartProviderType) => {
             ? item.cartItemsCount + 1
             : Math.max(1, item.cartItemsCount - 1);
 
-        return { ...item, cartItemsCount: newQuantity };
+        return {
+          ...item,
+          cartItemsCount: newQuantity,
+          totalItemPrice: calculateItemTotal(item.product.price, newQuantity),
+        };
       });
 
       return updatedCart;
