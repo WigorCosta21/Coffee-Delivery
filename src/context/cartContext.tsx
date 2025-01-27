@@ -11,8 +11,10 @@ interface CartContexType {
   cartTotal: number;
   addItemToCart: (product: IProduct, quantity: number) => void;
   removeItemFromCart: (id: string) => void;
-  incrementItemQuantity: (id: string) => void;
-  decrementItemQuantity: (id: string) => void;
+  updateItemQuantity: (
+    productId: string,
+    action: "increment" | "decrement"
+  ) => void;
 }
 
 interface CartProviderType {
@@ -54,24 +56,24 @@ export const CartProvider = ({ children }: CartProviderType) => {
     setCart(updatedCart);
   };
 
-  const incrementItemQuantity = (id: string) => {
-    const updatedItem = cart.map((item) =>
-      item.product.id === id
-        ? { ...item, cartItemsCount: item.cartItemsCount + 1 }
-        : item
-    );
+  const updateItemQuantity = (
+    productId: string,
+    action: "increment" | "decrement"
+  ) => {
+    setCart((currentCart) => {
+      const updatedCart = currentCart.map((item) => {
+        if (item.product.id !== productId) return item;
 
-    setCart(updatedItem);
-  };
+        const newQuantity =
+          action === "increment"
+            ? item.cartItemsCount + 1
+            : Math.max(1, item.cartItemsCount - 1);
 
-  const decrementItemQuantity = (id: string) => {
-    const updateItem = cart.map((item) =>
-      item.product.id === id && item.cartItemsCount > 1
-        ? { ...item, cartItemsCount: item.cartItemsCount - 1 }
-        : item
-    );
+        return { ...item, cartItemsCount: newQuantity };
+      });
 
-    setCart(updateItem);
+      return updatedCart;
+    });
   };
 
   return (
@@ -82,8 +84,7 @@ export const CartProvider = ({ children }: CartProviderType) => {
         cartTotal,
         addItemToCart,
         removeItemFromCart,
-        incrementItemQuantity,
-        decrementItemQuantity,
+        updateItemQuantity,
       }}
     >
       {children}
