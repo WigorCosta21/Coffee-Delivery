@@ -1,11 +1,15 @@
-import { QuantitySelector } from "@components/QuantitySelector";
-import { ShoppingCart } from "phosphor-react";
+import { useState } from "react";
 import { useTheme } from "styled-components";
+import { ShoppingCart } from "phosphor-react";
+import toast from "react-hot-toast";
+
+import { QuantitySelector } from "@components/QuantitySelector";
+
 import { priceFormat } from "@utils/priceFormart";
 import { useCart } from "@hooks/useCart";
 
 import * as S from "./styles";
-import { useState } from "react";
+
 type ProductItemProps = {
   item: IProduct;
 };
@@ -28,6 +32,7 @@ export const ProductItem = ({ item }: ProductItemProps) => {
   const handleAddToCart = () => {
     addItemToCart(item, quantity);
     setQuantity(1);
+    toast.success("Item adicionado no carrinho");
   };
 
   return (

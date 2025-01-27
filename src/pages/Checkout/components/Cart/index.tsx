@@ -1,13 +1,13 @@
-import { Trash } from "phosphor-react";
 import { useTheme } from "styled-components";
+import { Trash } from "phosphor-react";
+import toast from "react-hot-toast";
+import { useCart } from "@hooks/useCart";
+import { priceFormat } from "@utils/priceFormart";
 
 import { Card } from "../Card";
 import { QuantitySelector } from "@components/QuantitySelector";
 
-import { priceFormat } from "@utils/priceFormart";
-
 import * as S from "./styles";
-import { useCart } from "@hooks/useCart";
 
 export const Cart = () => {
   const theme = useTheme();
@@ -18,37 +18,42 @@ export const Cart = () => {
 
   return (
     <Card borderradius="6px 36px 6px 36px">
-      {cart.map((item) => (
-        <S.CartItem key={item.product.id}>
-          <S.CartContent>
-            <img src={item.product.image} alt={item.product.name} />
+      {cart.map((item) => {
+        const handleRemoveItem = () => {
+          toast.success("Item removido com sucesso");
+          removeItemFromCart(item.product.id);
+        };
 
-            <S.CartInfo>
-              <h3>{item.product.name}</h3>
+        return (
+          <S.CartItem key={item.product.id}>
+            <S.CartContent>
+              <img src={item.product.image} alt={item.product.name} />
 
-              <S.CartControls>
-                <QuantitySelector
-                  quantity={item.quantity}
-                  decrementQuantity={() => {
-                    updateItemQuantity(item.product.id, "decrement");
-                  }}
-                  increaseQuantity={() => {
-                    updateItemQuantity(item.product.id, "increment");
-                  }}
-                />
-                <S.RemoveButton
-                  onClick={() => removeItemFromCart(item.product.id)}
-                >
-                  <Trash size={16} color={theme.colors.purple} />
-                  Remover
-                </S.RemoveButton>
-              </S.CartControls>
-            </S.CartInfo>
-          </S.CartContent>
+              <S.CartInfo>
+                <h3>{item.product.name}</h3>
 
-          <span>R$ {priceFormat(item.totalItemPrice)}</span>
-        </S.CartItem>
-      ))}
+                <S.CartControls>
+                  <QuantitySelector
+                    quantity={item.quantity}
+                    decrementQuantity={() => {
+                      updateItemQuantity(item.product.id, "decrement");
+                    }}
+                    increaseQuantity={() => {
+                      updateItemQuantity(item.product.id, "increment");
+                    }}
+                  />
+                  <S.RemoveButton onClick={handleRemoveItem}>
+                    <Trash size={16} color={theme.colors.purple} />
+                    Remover
+                  </S.RemoveButton>
+                </S.CartControls>
+              </S.CartInfo>
+            </S.CartContent>
+
+            <span>R$ {priceFormat(item.totalItemPrice)}</span>
+          </S.CartItem>
+        );
+      })}
 
       <S.CartFooter>
         <S.CartSummary>
